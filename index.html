@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>Valentine Crossword</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Valentine Puzzle</p>
+          <h1>Crossword</h1>
+        </div>
+        <div class="status">
+          <span id="directionBadge">Across</span>
+          <span id="timer">00:00</span>
+          <details id="settingsMenu" class="menu">
+            <summary aria-label="Puzzle actions">⚙</summary>
+            <div class="menu-panel">
+              <button id="toggleDirection">Switch Direction</button>
+              <button id="checkPuzzle">Check</button>
+              <button id="revealPuzzle">Reveal</button>
+              <button id="clearPuzzle">Clear</button>
+            </div>
+          </details>
+        </div>
+      </header>
+
+      <section class="board-wrap">
+        <div id="board" class="board" role="grid" aria-label="crossword board"></div>
+      </section>
+
+      <section class="mobile-play">
+        <div class="clue-nav" aria-label="Clue navigation">
+          <button id="prevClue" class="clue-arrow" aria-label="Previous clue">◀</button>
+          <button id="activeClue" class="active-clue" aria-label="Toggle clue direction">Tap a square to begin.</button>
+          <button id="nextClue" class="clue-arrow" aria-label="Next clue">▶</button>
+        </div>
+        <div id="keyboard" class="keyboard" aria-label="On-screen keyboard"></div>
+      </section>
+
+      <p id="message" class="message" aria-live="polite"></p>
+    </main>
+
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>
