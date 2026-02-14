@@ -148,7 +148,8 @@ function bindActions() {
     const row = Number(target.dataset.row);
     const col = Number(target.dataset.col);
     if (active && active.row === row && active.col === col) {
-      direction = direction === "across" ? "down" : "across";
+      toggleClueDirection();
+      return;
     }
     active = { row, col };
     render();
@@ -396,8 +397,23 @@ function cycleClue(step) {
 }
 
 function toggleClueDirection() {
-  direction = direction === "across" ? "down" : "across";
-  render();
+  const nextDirection = direction === "across" ? "down" : "across";
+  const oppositeCells = getActiveCells(active, nextDirection);
+
+  if (oppositeCells.length > 1) {
+    const start = oppositeCells[0];
+    const num = numbering[`${start.row},${start.col}`];
+    if (num && puzzle.clues[nextDirection][num]) {
+      direction = nextDirection;
+      render();
+      return;
+    }
+  }
+
+  const moved = jumpToFirstUnfilledClue(nextDirection) || jumpToClue(getClueNumbers(nextDirection)[0], nextDirection);
+  if (!moved) {
+    render();
+  }
 }
 
 function findFirstOpenCell() {
