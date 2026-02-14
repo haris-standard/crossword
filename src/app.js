@@ -398,22 +398,41 @@ function cycleClue(step) {
 
 function toggleClueDirection() {
   const nextDirection = direction === "across" ? "down" : "across";
-  const oppositeCells = getActiveCells(active, nextDirection);
+  const crossing = findNearestAttachedClueStart(nextDirection);
+  if (!crossing) {
+    render();
+    return;
+  }
 
-  if (oppositeCells.length > 1) {
+  direction = nextDirection;
+  active = { row: crossing.row, col: crossing.col };
+  render();
+}
+
+function findNearestAttachedClueStart(nextDirection) {
+  if (!active) return null;
+  const currentCells = getActiveCells(active, direction);
+  if (!currentCells.length) return null;
+
+  let activeIndex = currentCells.findIndex((cell) => cell.row === active.row && cell.col === active.col);
+  if (activeIndex < 0) activeIndex = 0;
+
+  const orderedCells = currentCells
+    .map((cell, index) => ({ cell, distance: Math.abs(index - activeIndex) }))
+    .sort((a, b) => a.distance - b.distance)
+    .map((item) => item.cell);
+
+  for (const cell of orderedCells) {
+    const oppositeCells = getActiveCells(cell, nextDirection);
+    if (oppositeCells.length <= 1) continue;
     const start = oppositeCells[0];
     const num = numbering[`${start.row},${start.col}`];
-    if (num && puzzle.clues[nextDirection][num]) {
-      direction = nextDirection;
-      render();
-      return;
-    }
+    if (!num) continue;
+    if (!puzzle.clues[nextDirection][num]) continue;
+    return start;
   }
 
-  const moved = jumpToFirstUnfilledClue(nextDirection) || jumpToClue(getClueNumbers(nextDirection)[0], nextDirection);
-  if (!moved) {
-    render();
-  }
+  return null;
 }
 
 function findFirstOpenCell() {
