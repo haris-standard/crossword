@@ -91,6 +91,11 @@ function bindActions() {
     render();
   });
 
+  document.getElementById("refreshPage").addEventListener("click", () => {
+    closeSettingsMenu();
+    forceRefreshPage();
+  });
+
   window.addEventListener("keydown", (event) => {
     if (!active) return;
 
@@ -658,4 +663,10 @@ function launchConfetti() {
   }
 
   requestAnimationFrame(frame);
+}
+
+function forceRefreshPage() {
+  const url = new URL(window.location.href);
+  url.searchParams.set("v", String(Date.now()));
+  window.location.replace(url.toString());
 }
