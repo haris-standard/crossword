@@ -27,6 +27,7 @@ let hasCelebrated = false;
 
 const numbering = buildNumbering(solution);
 const clueStarts = buildClueStarts(solution, numbering);
+setInitialSelection();
 initializeBoard();
 buildKeyboard();
 bindActions();
@@ -491,6 +492,18 @@ function buildClueStarts(grid, numbers) {
   }
 
   return starts;
+}
+
+function setInitialSelection() {
+  if (clueStarts.across[1]) {
+    direction = "across";
+    active = { ...clueStarts.across[1] };
+    return;
+  }
+  if (clueStarts.down[1]) {
+    direction = "down";
+    active = { ...clueStarts.down[1] };
+  }
 }
 
 function isSolved() {

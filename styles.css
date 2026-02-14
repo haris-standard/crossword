@@ -120,7 +120,7 @@ button {
 }
 
 .board-wrap {
-  overflow: auto;
+  overflow: hidden;
   border: 1px solid #d8d8d8;
   border-radius: 10px;
   background: #fff;
@@ -132,7 +132,8 @@ button {
   display: grid;
   grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
   grid-template-rows: repeat(var(--rows), minmax(0, 1fr));
-  width: min(94vw, 700px);
+  width: 100%;
+  max-width: 700px;
   aspect-ratio: var(--cols) / var(--rows);
   border: 2px solid var(--line);
 }
@@ -288,6 +289,7 @@ button {
 @media (max-width: 919px) {
   .app {
     grid-template-rows: auto auto 1fr auto;
+    padding: 10px 8px;
   }
 
   .mobile-play {
