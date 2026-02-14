@@ -251,11 +251,11 @@ function handleLetter(letter) {
       const otherDirection = direction === "across" ? "down" : "across";
       const switched = jumpToFirstUnfilledClue(otherDirection);
       if (!switched) {
-        move(1);
+        moveToNextUnfilledCell(1);
       }
     }
   } else {
-    move(1);
+    moveToNextUnfilledCell(1);
   }
 
   messageEl.textContent = "";
@@ -453,6 +453,23 @@ function move(step, forcedDirection = direction) {
 
   while (r >= 0 && r < ROWS && c >= 0 && c < COLS) {
     if (solution[r][c] !== "#") {
+      active = { row: r, col: c };
+      return;
+    }
+    r += delta[0];
+    c += delta[1];
+  }
+}
+
+function moveToNextUnfilledCell(step, forcedDirection = direction) {
+  if (!active) return;
+  const delta = forcedDirection === "across" ? [0, step] : [step, 0];
+
+  let r = active.row + delta[0];
+  let c = active.col + delta[1];
+
+  while (r >= 0 && r < ROWS && c >= 0 && c < COLS) {
+    if (solution[r][c] !== "#" && entries[r][c] === "") {
       active = { row: r, col: c };
       return;
     }
